@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hub v2</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hub v3</title>
   <style>
     * {
       margin: 0;
@@ -16,6 +16,8 @@
       background: #0f0f0f;
       color: white;
       overflow: hidden;
+      position: relative;
+      height: 100vh;
     }
 
     .hub-box {
@@ -29,6 +31,8 @@
       margin: 100px auto;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
       animation: floatIn 1s ease forwards;
+      z-index: 2;
+      position: relative;
     }
 
     h1 {
@@ -65,24 +69,24 @@
       }
     }
 
-    @keyframes emojiRain {
-      0% { transform: translateY(-100px) rotate(0deg); }
-      100% { transform: translateY(110vh) rotate(360deg); }
-    }
-
-    .emoji {
+    /* White balls falling */
+    .ball {
       position: fixed;
-      font-size: 24px;
-      animation: emojiRain 5s linear infinite;
-      top: -50px;
+      top: -20px;
+      width: 12px;
+      height: 12px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(255,255,255,0.7);
+      animation: fall linear;
+      z-index: 1;
     }
 
-    .emoji:nth-child(odd) {
-      left: calc(10% + 80% * var(--i));
-    }
-
-    .emoji:nth-child(even) {
-      left: calc(5% + 80% * var(--i));
+    @keyframes fall {
+      to {
+        transform: translateY(120vh);
+        opacity: 0;
+      }
     }
 
     #music-btn {
@@ -102,31 +106,24 @@
   </style>
 </head>
 <body>
-  <!-- Emojis for fun -->
-  <div class="emoji" style="--i:0;">💫</div>
-  <div class="emoji" style="--i:0.1;">🔥</div>
-  <div class="emoji" style="--i:0.2;">🎮</div>
-  <div class="emoji" style="--i:0.3;">🚀</div>
-  <div class="emoji" style="--i:0.4;">🧠</div>
-  <div class="emoji" style="--i:0.5;">🎧</div>
 
-  <!-- Main box -->
   <div class="hub-box">
-    <h1>🌐 Min GitHub Hub v2</h1>
+    <h1>🌐 Min GitHub Hub v3</h1>
     <div class="link-list">
-      <a href="https://dit-brugernavn.github.io/project1" target="_blank">Project 1</a>
-      <a href="https://dit-brugernavn.github.io/project2" target="_blank">Project 2</a>
-      <a href="https://dit-brugernavn.github.io/project3" target="_blank">Project 3</a>
+      <a href="https://mrsemis.github.io/hub/project1" target="_blank">Project 1</a>
+      <a href="https://mrsemis.github.io/hub/project2" target="_blank">Project 2</a>
+      <a href="https://mrsemis.github.io/hub/project3" target="_blank">Project 3</a>
     </div>
     <button id="music-btn">🔇 Slå lyd til</button>
   </div>
 
-  <!-- Music (hostet eksternt, eller brug din egen MP3 hvis du har én) -->
+  <!-- Musik -->
   <audio id="bg-music" loop>
-    <source src="https://files.catbox.moe/f4kxrg.mp3" type="audio/mpeg">
+    <source src="https://mrsemis.github.io/hub/BGmusic.mp3" type="audio/mpeg">
   </audio>
 
   <script>
+    // Musik kontrol
     const music = document.getElementById('bg-music');
     const btn = document.getElementById('music-btn');
     let playing = false;
@@ -141,6 +138,24 @@
       }
       playing = !playing;
     });
+
+    // White balls falling animation
+    function createBall() {
+      const ball = document.createElement('div');
+      ball.classList.add('ball');
+      const size = Math.random() * 8 + 4;
+      ball.style.width = `${size}px`;
+      ball.style.height = `${size}px`;
+      ball.style.left = `${Math.random() * 100}vw`;
+      ball.style.animationDuration = `${Math.random() * 4 + 2}s`;
+      document.body.appendChild(ball);
+
+      setTimeout(() => {
+        ball.remove();
+      }, 6000);
+    }
+
+    setInterval(createBall, 200);
   </script>
 </body>
 </html>
