@@ -2,71 +2,104 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hub v3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculator v4 - Keyboard support</title>
   <style>
+    /* Baseline */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-
     body {
+      height: 100vh;
       background: #0f0f0f;
       color: white;
       overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       position: relative;
-      height: 100vh;
+      user-select: none;
     }
 
-    .hub-box {
-      background: rgba(255, 255, 255, 0.07);
+    /* Calculator box - med runde hjørner */
+    .calc-container {
+      background: rgba(255,255,255,0.07);
       border: 1px solid rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(12px);
-      padding: 40px;
       border-radius: 20px;
-      text-align: center;
-      max-width: 420px;
-      margin: 100px auto;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-      animation: floatIn 1s ease forwards;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+      padding: 30px;
+      width: 320px;
       z-index: 2;
       position: relative;
     }
 
-    h1 {
-      font-size: 28px;
-      margin-bottom: 20px;
-      animation: fadeIn 1.5s ease forwards;
-    }
-
-    .link-list a {
-      display: block;
-      margin: 12px 0;
-      color: white;
-      text-decoration: none;
-      font-size: 18px;
-      padding: 10px;
+    /* Display - rundede hjørner + no overflow */
+    #display {
+      background: rgba(255,255,255,0.12);
       border-radius: 12px;
-      transition: 0.3s ease;
-      background: rgba(255, 255, 255, 0.05);
+      padding: 20px 15px;
+      font-size: 36px;
+      text-align: right;
+      margin-bottom: 25px;
+      min-height: 48px;
+      user-select: text;
+      letter-spacing: 2px;
+      box-shadow: inset 0 0 8px rgba(255,255,255,0.15);
+      color: #fff;
+
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
-    .link-list a:hover {
+    /* Buttons grid */
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    /* Buttons style */
+    button {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 12px;
+      padding: 18px 0;
+      font-size: 22px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.15s ease;
+      box-shadow: 0 3px 8px rgba(255,255,255,0.1);
+      user-select: none;
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.22);
+      transform: scale(1.1);
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    /* Special buttons styling */
+    .btn-op {
       background: rgba(255, 255, 255, 0.15);
-      transform: scale(1.05);
     }
-
-    @keyframes floatIn {
-      from {
-        transform: translateY(40px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
+    .btn-op:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .btn-eq {
+      grid-column: span 2;
+      background: #ffffff33;
+      font-weight: bold;
+    }
+    .btn-eq:hover {
+      background: #ffffff55;
     }
 
     /* White balls falling */
@@ -88,58 +121,140 @@
         opacity: 0;
       }
     }
-
-    #music-btn {
-      margin-top: 15px;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      color: white;
-      padding: 8px 16px;
-      font-size: 14px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    #music-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
   </style>
 </head>
 <body>
 
-  <div class="hub-box">
-    <h1>🌐 Min GitHub Hub v3</h1>
-    <div class="link-list">
-      <a href="https://mrsemis.github.io/hub/sund-mad-picker" target="_blank">Sundmad</a>
-      <a href="https://mrsemis.github.io/hub/Calculator" target="_blank">lommeregner</a>
-      <a href="https://mrsemis.github.io/hub/project3" target="_blank">Project 3</a>
+  <div class="calc-container" tabindex="0">
+    <div id="display">0</div>
+    <div class="btn-grid">
+      <button class="btn-clear">C</button>
+      <button class="btn-op">÷</button>
+      <button class="btn-op">×</button>
+      <button class="btn-op">−</button>
+
+      <button>7</button>
+      <button>8</button>
+      <button>9</button>
+      <button class="btn-op">+</button>
+
+      <button>4</button>
+      <button>5</button>
+      <button>6</button>
+      <button class="btn-eq">=</button>
+
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+      
+      <button>0</button>
+      <button>.</button>
     </div>
-    <button id="music-btn">🔇 Slå lyd til</button>
   </div>
 
-  <!-- Musik -->
-  <audio id="bg-music" loop>
-    <source src="https://mrsemis.github.io/hub/BGmusic.mp3" type="audio/mp3">
-  </audio>
-
   <script>
-    // Musik kontrol
-    const music = document.getElementById('bg-music');
-    const btn = document.getElementById('music-btn');
-    let playing = false;
+    const display = document.getElementById('display');
+    const buttons = document.querySelectorAll('button');
+    let current = '';
+    let lastPressed = '';
 
-    btn.addEventListener('click', () => {
-      if (!playing) {
-        music.play();
-        btn.innerText = '🔊 Slå lyd fra';
-      } else {
-        music.pause();
-        btn.innerText = '🔇 Slå lyd til';
-      }
-      playing = !playing;
+    const operationsMap = {
+      '÷': '/',
+      '×': '*',
+      '−': '-',
+      '+': '+'
+    };
+
+    function updateDisplay(value) {
+      display.textContent = value;
+    }
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        handleInput(button.textContent);
+      });
     });
 
-    // White balls falling animation
+    function handleInput(val) {
+      if (val === 'C') {
+        current = '';
+        updateDisplay('0');
+        lastPressed = '';
+        return;
+      }
+
+      if (val === '=') {
+        try {
+          let expression = current;
+          for (const op in operationsMap) {
+            expression = expression.split(op).join(operationsMap[op]);
+          }
+          let result = eval(expression);
+          if (result === Infinity || isNaN(result)) result = 'Error';
+          else result = Math.round(result * 1e12) / 1e12;
+          updateDisplay(result);
+          current = result.toString();
+        } catch {
+          updateDisplay('Error');
+          current = '';
+        }
+        lastPressed = '=';
+        return;
+      }
+
+      if (lastPressed === '=' && /[0-9.]/.test(val)) {
+        current = '';
+        updateDisplay('0');
+        lastPressed = '';
+      }
+
+      if (val === '.') {
+        let parts = current.split(/[\+\-\*\/]/);
+        let lastNum = parts[parts.length -1];
+        if (lastNum.includes('.')) return;
+      }
+
+      if (/[+\-\*\/]/.test(operationsMap[val] || val)) {
+        if (current === '') return;
+        if (/[+\-\*\/]$/.test(current)) {
+          current = current.slice(0, -1) + operationsMap[val];
+        } else {
+          current += operationsMap[val];
+        }
+        updateDisplay(current.replace(/\*/g,'×').replace(/\//g,'÷'));
+        lastPressed = val;
+        return;
+      }
+
+      current += val;
+      updateDisplay(current.replace(/\*/g,'×').replace(/\//g,'÷'));
+      lastPressed = val;
+    }
+
+    window.addEventListener('keydown', e => {
+      const key = e.key;
+
+      if ((key >= '0' && key <= '9') || key === '.') {
+        handleInput(key);
+      } else if (key === 'Enter' || key === '=') {
+        e.preventDefault();
+        handleInput('=');
+      } else if (key === 'Backspace') {
+        // Slet sidste karakter
+        e.preventDefault();
+        if (current.length > 0) {
+          current = current.slice(0, -1);
+          updateDisplay(current === '' ? '0' : current.replace(/\*/g,'×').replace(/\//g,'÷'));
+        }
+      } else if (key === 'Escape') {
+        e.preventDefault();
+        handleInput('C');
+      } else if (key === '+' || key === '-' || key === '*' || key === '/') {
+        handleInput(key);
+      }
+    });
+
+    // Falling balls animation
     function createBall() {
       const ball = document.createElement('div');
       ball.classList.add('ball');
