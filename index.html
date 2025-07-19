@@ -3,75 +3,144 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hub</title>
+  <title>Hub v2</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
     }
 
     body {
-      height: 100vh;
       background: #0f0f0f;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      color: white;
       overflow: hidden;
     }
 
     .hub-box {
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.07);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
       padding: 40px;
       border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       text-align: center;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeIn 1s ease-out forwards;
-      width: 90%;
-      max-width: 400px;
+      max-width: 420px;
+      margin: 100px auto;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      animation: floatIn 1s ease forwards;
     }
 
-    .hub-box h1 {
-      color: #fff;
+    h1 {
+      font-size: 28px;
       margin-bottom: 20px;
-      font-size: 24px;
+      animation: fadeIn 1.5s ease forwards;
     }
 
     .link-list a {
       display: block;
-      margin: 10px 0;
-      color: #fff;
+      margin: 12px 0;
+      color: white;
       text-decoration: none;
-      transition: 0.3s;
+      font-size: 18px;
       padding: 10px;
-      border-radius: 10px;
+      border-radius: 12px;
+      transition: 0.3s ease;
+      background: rgba(255, 255, 255, 0.05);
     }
 
     .link-list a:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.15);
+      transform: scale(1.05);
     }
 
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
+    @keyframes floatIn {
+      from {
+        transform: translateY(40px);
+        opacity: 0;
       }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes emojiRain {
+      0% { transform: translateY(-100px) rotate(0deg); }
+      100% { transform: translateY(110vh) rotate(360deg); }
+    }
+
+    .emoji {
+      position: fixed;
+      font-size: 24px;
+      animation: emojiRain 5s linear infinite;
+      top: -50px;
+    }
+
+    .emoji:nth-child(odd) {
+      left: calc(10% + 80% * var(--i));
+    }
+
+    .emoji:nth-child(even) {
+      left: calc(5% + 80% * var(--i));
+    }
+
+    #music-btn {
+      margin-top: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #music-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
     }
   </style>
 </head>
 <body>
+  <!-- Emojis for fun -->
+  <div class="emoji" style="--i:0;">💫</div>
+  <div class="emoji" style="--i:0.1;">🔥</div>
+  <div class="emoji" style="--i:0.2;">🎮</div>
+  <div class="emoji" style="--i:0.3;">🚀</div>
+  <div class="emoji" style="--i:0.4;">🧠</div>
+  <div class="emoji" style="--i:0.5;">🎧</div>
+
+  <!-- Main box -->
   <div class="hub-box">
-    <h1>🌐 Min GitHub Hub</h1>
+    <h1>🌐 Min GitHub Hub v2</h1>
     <div class="link-list">
       <a href="https://dit-brugernavn.github.io/project1" target="_blank">Project 1</a>
       <a href="https://dit-brugernavn.github.io/project2" target="_blank">Project 2</a>
       <a href="https://dit-brugernavn.github.io/project3" target="_blank">Project 3</a>
     </div>
+    <button id="music-btn">🔇 Slå lyd til</button>
   </div>
+
+  <!-- Music (hostet eksternt, eller brug din egen MP3 hvis du har én) -->
+  <audio id="bg-music" loop>
+    <source src="https://files.catbox.moe/f4kxrg.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const music = document.getElementById('bg-music');
+    const btn = document.getElementById('music-btn');
+    let playing = false;
+
+    btn.addEventListener('click', () => {
+      if (!playing) {
+        music.play();
+        btn.innerText = '🔊 Slå lyd fra';
+      } else {
+        music.pause();
+        btn.innerText = '🔇 Slå lyd til';
+      }
+      playing = !playing;
+    });
+  </script>
 </body>
 </html>
